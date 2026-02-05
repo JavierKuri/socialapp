@@ -14,7 +14,7 @@ class _PostsHomePageState extends State<PostsHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(),
+      body: Container(child: Text("Iedhckjefvb"),),
     );
   }
 }

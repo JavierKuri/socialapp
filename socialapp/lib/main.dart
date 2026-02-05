@@ -50,23 +50,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      if (data['success'] == true) {
-        //int user_id = data['id'];
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const PostsHomePage(title: "Home")),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(data['message'])),
-        );
-      }
+      user_email = data['email'];
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PostsHomePage(title: "Home")),
+      );
+
+    } else if (response.statusCode == 401) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid email or password')),
+      );
+
+    } else if (response.statusCode == 400) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid request')),
+      );
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Server error. Please try again later.')),
+        const SnackBar(content: Text('Server error')),
       );
     }
   }
+
 
      
   @override
