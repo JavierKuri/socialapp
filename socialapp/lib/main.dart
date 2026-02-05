@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:socialapp/globals.dart';
 import 'dart:convert';
 import 'PostsHomePage.dart';
-//import 'globals.dart';
 import 'SignupPage.dart';
 
 void main() {
@@ -38,35 +38,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> login() async {
     final response = await http.post(
-      Uri.parse('loginuri'),
-      body: {
-        'correo': _emailController.text,
-        'contra': _passwordController.text,
+      Uri.parse("$backendurl/login"),
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: jsonEncode({
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      }),
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['success'] == true) {
-        int id_usuario = data['id_usuario'];
-        // Navigate to HomeScreen on success
+        //int user_id = data['id'];
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const PostsHomePage(title: "Home")),
         );
       } else {
-        // Show login failed message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(data['message'])),
         );
       }
     } else {
-      // Server or network error
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Server error. Please try again later.')),
       );
     }
-  } 
+  }
+
      
   @override
   Widget build(BuildContext context) {
