@@ -1,0 +1,40 @@
+# ========== General ==========
+*.log
+*.swp
+.DS_Store
+
+# ========== Python ==========
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.venv/
+
+# ========== Uploads / User Data ==========
+uploads/
+
+# ========== Flutter / Dart ==========
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# ========== Android ==========
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# ========== IntelliJ / Android Studio ==========
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# ========== VS Code ==========
+.vscode/

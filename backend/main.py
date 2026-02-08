@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from endpoints.login import handle_login
+from endpoints.signup import handle_signup
 import json
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -29,6 +30,8 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/login":
             handle_login(self)
+        elif self.path == "/signup":
+            handle_signup(self)
         else:
             self.send_json(404, {"error": "Not found"})
 
