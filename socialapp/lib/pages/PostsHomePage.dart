@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import '../widgets/app_bottom_bar.dart';
 
 class PostsHomePage extends StatefulWidget {
   const PostsHomePage({super.key, required this.title});
@@ -14,7 +13,8 @@ class _PostsHomePageState extends State<PostsHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(child: Text("Iedhckjefvb"),),
+      body: Container(child: Text("POSTS HOME PAGE"),),
+      bottomNavigationBar: AppBottomNavBar(selectedIndex: 0),
     );
   }
 }
