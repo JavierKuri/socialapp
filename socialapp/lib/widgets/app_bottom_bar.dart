@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../pages/PostsHomePage.dart';
+import '../pages/posts_home_page.dart';
 import '../pages/chats_page.dart';
 import '../pages/following_page.dart';
 import '../pages/user_page.dart';
+import '../pages/upload_page.dart';
 
 class AppBottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -25,9 +26,13 @@ class AppBottomNavBar extends StatelessWidget {
         page = ChatsPage(title: 'Chats');
         break;
       case 2:
-        page = FollowingPage(title: 'Following');
+        page = UploadPage(title: 'Upload');
         break;
       case 3:
+        page = FollowingPage(title: 'Following');
+        break;
+      case 4:
+        page = UserPage(title: 'User');
       default:
         page = UserPage(title: 'User');
     }
@@ -55,6 +60,10 @@ class AppBottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.message_rounded),
           label: 'Chats',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.upload),
+          label: 'Upload',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.feed_outlined),

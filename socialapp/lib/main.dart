@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:socialapp/globals.dart';
 import 'dart:convert';
-import 'pages/PostsHomePage.dart';
-import 'pages/SignupPage.dart';
+import 'pages/posts_home_page.dart';
+import 'pages/signup_page.dart';
 
 void main() {
   runApp(const MyApp());

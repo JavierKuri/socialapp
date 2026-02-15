@@ -13,8 +13,8 @@ class _FollowingPageState extends State<FollowingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(child: Text("Following PAGE"),),
-      bottomNavigationBar: AppBottomNavBar(selectedIndex: 2),
+      body: Container(child: Text("Following Page"),),
+      bottomNavigationBar: AppBottomNavBar(selectedIndex: 3),
     );
   }
 }

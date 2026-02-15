@@ -14,7 +14,7 @@ class _UserPageState extends State<UserPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(child: Text("USER PAGE"),),
-      bottomNavigationBar: AppBottomNavBar(selectedIndex: 3),
+      bottomNavigationBar: AppBottomNavBar(selectedIndex: 4),
     );
   }
 }
