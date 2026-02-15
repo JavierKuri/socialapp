@@ -36,6 +36,7 @@ class _uploadPageState extends State<UploadPage> {
         "Content-Type": "application/json",
       },
       body: jsonEncode({
+        'email': user_email,
         'title': _titleController.text,
         'description': _descriptionController.text,
         'postPicture': pictureBase64,
@@ -103,7 +104,7 @@ class _uploadPageState extends State<UploadPage> {
           const SizedBox(height:30),
           ElevatedButton(
             onPressed: _pickPostPicture,
-            child: const Text('Pick profile picture from Gallery'),
+            child: const Text('Pick picture from Gallery'),
           ),
           if (postPictureFile != null)
             Padding(
