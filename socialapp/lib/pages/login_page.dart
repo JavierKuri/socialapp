@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:socialapp/globals.dart';
 import '../services/auth_service.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
 
   bool _isLoading = false;
 
-  Future<void> _signup() async {
+  Future<void> _login() async {
     setState(() => _isLoading = true);
 
-    final user = await _authService.signup(
+    final user = await _authService.login(
       _emailController.text.trim(),
       _passwordController.text.trim(),
     );
@@ -31,7 +31,7 @@ class _SignupPageState extends State<SignupPage> {
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Signup failed')),
+        const SnackBar(content: Text('Invalid email or password')),
       );
     }
   }
@@ -46,7 +46,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Sign Up")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
@@ -66,9 +66,16 @@ class _SignupPageState extends State<SignupPage> {
             _isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
-                    onPressed: _signup,
-                    child: const Text("Sign Up"),
+                    onPressed: _login,
+                    child: const Text("Login"),
                   ),
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/signup');
+              },
+              child: const Text("Create new account"),
+            ),
           ],
         ),
       ),

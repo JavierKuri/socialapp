@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
-import 'package:socialapp/globals.dart';
-import '../pages/posts_home_page.dart';
+import 'dart:convert';
+import '../models/post.dart';
+import '../services/post_service.dart';
 import '../widgets/app_bottom_bar.dart';
+import '../globals.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key, required this.title});
   final String title;
 
   @override
-  State<UploadPage> createState() => _uploadPageState();
+  State<UploadPage> createState() => _UploadPageState();
 }
 
-class _uploadPageState extends State<UploadPage> {
+class _UploadPageState extends State<UploadPage> {
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final ImagePicker _postPicturePicker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
+  final PostService _postService = PostService();
+
   XFile? postPictureFile;
+  bool _isLoading = false;
 
   Future<void> upload() async {
+    setState(() => _isLoading = true);
 
     String? pictureBase64;
 
@@ -30,45 +34,33 @@ class _uploadPageState extends State<UploadPage> {
       pictureBase64 = base64Encode(bytes);
     }
 
-    final response = await http.post(
-      Uri.parse("$backendurl/upload"),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode({
-        'email': user_email,
-        'title': _titleController.text,
-        'description': _descriptionController.text,
-        'postPicture': pictureBase64,
-      }),
+    final post = Post(
+      email: user_email!,
+      title: _titleController.text.trim(),
+      description: _descriptionController.text.trim(),
+      postPicture: pictureBase64,
     );
-    if (response.statusCode == 200) {
+
+    final success = await _postService.uploadPost(post);
+
+    setState(() => _isLoading = false);
+
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Upload successful. Returning to Home page...')),
+        const SnackBar(content: Text('Upload successful')),
       );
 
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => PostsHomePage(title: "Home")),
-        );
-      });
-
-    } else if (response.statusCode == 400) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid data')),
-      );
-
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Server error. Please try again later.')),
+        const SnackBar(content: Text('Upload failed')),
       );
     }
   }
 
   Future<void> _pickPostPicture() async {
-    final XFile? pickedFile =
-        await _postPicturePicker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -80,45 +72,41 @@ class _uploadPageState extends State<UploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+      appBar: AppBar(title: Text(widget.title)),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ListView(
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(labelText: "Title"),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(labelText: "Description"),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _pickPostPicture,
+              child: const Text('Pick picture from Gallery'),
+            ),
+            if (postPictureFile != null)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Icon(Icons.check, color: Colors.green),
+              ),
+            const SizedBox(height: 30),
+            _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : ElevatedButton(
+                    onPressed: upload,
+                    child: const Text("Upload"),
+                  ),
+          ],
+        ),
       ),
-
-      // Fields for user input
-      body: ListView(
-        children: [
-          TextField(
-            controller: _titleController,
-            decoration: InputDecoration(
-              labelText: "Title"
-            ),
-          ),
-          const SizedBox(height: 30),
-          TextField(
-            controller: _descriptionController,
-            decoration: InputDecoration(
-              labelText: "Descriprion"
-            ),
-          ),
-          const SizedBox(height:30),
-          ElevatedButton(
-            onPressed: _pickPostPicture,
-            child: const Text('Pick picture from Gallery'),
-          ),
-          if (postPictureFile != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: const Icon(
-                Icons.check,
-                color: Colors.green,
-              )
-            ),
-          const SizedBox(height: 30),
-          ElevatedButton(onPressed: upload, child: const Text("Upload"))
-        ],
-      ),
-      bottomNavigationBar: AppBottomNavBar(selectedIndex: 2),
+      bottomNavigationBar: const AppBottomNavBar(selectedIndex: 2),
     );
   }
 }

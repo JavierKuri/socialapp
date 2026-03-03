@@ -58,4 +58,4 @@ def handle_upload(handler):
         )
 
     # 4. Success
-    handler.respond(200, {"message": "User created"})
+    handler.respond(200, {"message": "Post created"})
