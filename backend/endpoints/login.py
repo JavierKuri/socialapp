@@ -37,7 +37,11 @@ def handle_login(handler):
         return
 
     # 4. Success
+    user_node = record["u"]
     handler.respond(200, {
-        "success": True,
-        "email": email
+        "name": user_node["name"],
+        "email": user_node["email"],
+        "birthday": user_node["birthday"],
+        "profilePicture": user_node.get("profilePicturePath"),
+        "bannerPicture": user_node.get("bannerPicturePath")
     })

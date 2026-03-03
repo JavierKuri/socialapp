@@ -76,4 +76,10 @@ def handle_signup(handler):
         )
 
     # 4. Success
-    handler.respond(200, {"message": "User created"})
+    handler.respond(200, {
+        "name": name,
+        "email": email,
+        "birthday": birthday,
+        "profilePicture": profile_path,
+        "bannerPicture": banner_path
+    })
