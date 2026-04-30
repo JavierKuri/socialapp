@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/signup_request.dart';
@@ -37,7 +38,8 @@ class AuthService {
     return null;
   }
 
-  Future<void> logout() async {
-    // TODO
+  Future<void> logout(BuildContext context) async {
+    global_user = null;
+    Navigator.pushReplacementNamed(context, '/');
   }
 }

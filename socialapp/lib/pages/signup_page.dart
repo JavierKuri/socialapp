@@ -72,7 +72,7 @@ class _SignupPageState extends State<SignupPage> {
 
     if (user != null) {
       // Temporary session storage
-      user_email = user.email;
+      global_user = user;
 
       Navigator.pushReplacementNamed(context, '/home');
     } else {
