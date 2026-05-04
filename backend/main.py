@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from endpoints.login import handle_login
 from endpoints.signup import handle_signup
 from endpoints.upload import handle_upload
+from endpoints.get_image import handle_get_image
 import json
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -35,6 +36,8 @@ class MyHandler(BaseHTTPRequestHandler):
             handle_signup(self)
         elif self.path == "/upload":
             handle_upload(self)
+        elif self.path == "/get_image":
+            handle_get_image(self)
         else:
             self.send_json(404, {"error": "Not found"})
 
