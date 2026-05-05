@@ -35,10 +35,10 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     final post = Post(
-      email: global_user!.email,
+      id: global_user!.email,
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
-      postPicture: pictureBase64,
+      postPicture: pictureBase64!,
     );
 
     final success = await _postService.uploadPost(post);
