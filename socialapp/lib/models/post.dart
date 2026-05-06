@@ -1,11 +1,11 @@
 class Post {
-  final String id;
+  final String email;
   final String title;
   final String description;
   final String postPicture;
 
   Post({
-    required this.id,
+    required this.email,
     required this.title,
     required this.description,
     required this.postPicture,
@@ -13,7 +13,7 @@ class Post {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'email': email,
       'title': title,
       'description': description,
       'postPicture': postPicture,
@@ -21,11 +21,11 @@ class Post {
   }
 
   factory Post.fromJson(Map<String, dynamic> json) {
-  return Post(
-    id: json['id'],
-    title: json['title'],
-    description: json['description'],
-    postPicture: json['postPicture'],
-  );
-}
+    return Post(
+      email: json['email'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      postPicture: json['picture_path'] ?? '',
+    );
+  }
 }

@@ -35,7 +35,7 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     final post = Post(
-      id: global_user!.email,
+      email: global_user!.email,
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       postPicture: pictureBase64!,

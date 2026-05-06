@@ -16,7 +16,7 @@ class PostService {
 
   Future<List<Post>> getPosts(String email) async {
     final response = await http.post(
-      Uri.parse("$backendurl/get_post"),
+      Uri.parse("$backendurl/get_posts_by_user"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({'email': email}),
     );
@@ -30,6 +30,6 @@ class PostService {
           .toList();
     }
 
-    return [];
+    throw Exception("Request failed");
   }
 }

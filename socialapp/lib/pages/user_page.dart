@@ -11,6 +11,7 @@ import '../models/post.dart';
 class UserPage extends StatefulWidget {
   const UserPage({super.key, required this.title});
   final String title;
+
   @override
   State<UserPage> createState() => _UserPageState();
 }
@@ -19,21 +20,20 @@ class _UserPageState extends State<UserPage> {
   final AuthService _authService = AuthService();
   final ImageService _imageService = ImageService();
   final PostService _postService = PostService();
-  late Future<List<Post>> _postsFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _postsFuture = _postService.getPosts(global_user!.email);
-  }
+  Future<List<Post>>? _postsFuture;
 
   @override
   Widget build(BuildContext context) {
+    // Wait until user exists
     if (global_user == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
+
+    // Initialize posts 
+    _postsFuture ??= _postService.getPosts(global_user!.email);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -46,8 +46,11 @@ class _UserPageState extends State<UserPage> {
             FutureBuilder<Uint8List?>(
               future: _imageService.getImageBytes(global_user!.bannerPicture!),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData) {
+                  return const SizedBox();
                 }
                 return Image.memory(snapshot.data!);
               },
@@ -59,28 +62,49 @@ class _UserPageState extends State<UserPage> {
             FutureBuilder<Uint8List?>(
               future: _imageService.getImageBytes(global_user!.profilePicture!),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData) {
+                  return const SizedBox();
                 }
                 return Image.memory(snapshot.data!);
               },
             ),
+
             const SizedBox(height: 10),
+
             Text(
               "${global_user!.name} Birthday: ${global_user!.birthday}",
               textAlign: TextAlign.center,
             ),
+
             const SizedBox(height: 10),
 
-            //User uploads
+            // Uploads
             const Text("Your Uploads"),
+
             FutureBuilder<List<Post>>(
               future: _postsFuture,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                // Loading
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
+
+                // Error
+                if (snapshot.hasError) {
+                  print(snapshot.error); // VERY IMPORTANT
+                  return Text("Error: ${snapshot.error}");
+                }
+
+                // Empty
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No posts yet");
+                }
+
                 final posts = snapshot.data!;
+
                 return SizedBox(
                   height: 120,
                   child: ListView.builder(
@@ -101,6 +125,7 @@ class _UserPageState extends State<UserPage> {
             ),
 
             const SizedBox(height: 10),
+
             ElevatedButton(
               onPressed: () => _authService.logout(context),
               child: const Text("LOGOUT"),

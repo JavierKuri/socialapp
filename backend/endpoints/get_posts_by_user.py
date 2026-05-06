@@ -11,7 +11,7 @@ def handle_get_posts_by_user(handler):
 
     email = data.get("email")
     if not email:
-        handler.respond(400, {"error": "Missing userId"})
+        handler.respond(400, {"error": "Missing email"})
         return
 
     # 2. Query Neo4j
