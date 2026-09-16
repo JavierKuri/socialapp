@@ -4,6 +4,7 @@ from endpoints.signup import handle_signup
 from endpoints.upload import handle_upload
 from endpoints.get_image import handle_get_image
 from endpoints.get_posts_by_user import handle_get_posts_by_user
+from endpoints.get_posts import handle_get_posts
 import json
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -41,6 +42,8 @@ class MyHandler(BaseHTTPRequestHandler):
             handle_get_image(self)
         elif self.path == "/get_posts_by_user":
             handle_get_posts_by_user(self)
+        elif self.path == "/get_posts":
+            handle_get_posts(self)
         else:
             self.send_json(404, {"error": "Not found"})
 

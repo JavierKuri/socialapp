@@ -14,7 +14,7 @@ class PostService {
     return response.statusCode == 200;
   }
 
-  Future<List<Post>> getPosts(String email) async {
+  Future<List<Post>> getPostsByUser(String email) async {
     final response = await http.post(
       Uri.parse("$backendurl/get_posts_by_user"),
       headers: {"Content-Type": "application/json"},
@@ -32,4 +32,24 @@ class PostService {
 
     throw Exception("Request failed");
   }
+
+    Future<List<Post>> getPosts() async {
+    final response = await http.post(
+      Uri.parse("$backendurl/get_posts"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({})
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List postsJson = data['posts'] ?? [];
+
+      return postsJson
+          .map((json) => Post.fromJson(json))
+          .toList();
+    }
+
+    throw Exception("Request failed");
+  }
+
 }

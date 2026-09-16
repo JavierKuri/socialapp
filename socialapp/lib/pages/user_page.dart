@@ -33,7 +33,7 @@ class _UserPageState extends State<UserPage> {
     }
 
     // Initialize posts 
-    _postsFuture ??= _postService.getPosts(global_user!.email);
+    _postsFuture ??= _postService.getPostsByUser(global_user!.email);
 
     return Scaffold(
       backgroundColor: Colors.white,
