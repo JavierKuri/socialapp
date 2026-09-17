@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/image_service.dart';
 import '../models/post.dart';
+import '../pages/detailed_post_page.dart';
 
 class SmallPostWidget extends StatelessWidget {
   final Post post;
@@ -15,7 +16,12 @@ class SmallPostWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // TODO
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailedPostPage(post: post),
+            ),
+          );
       },
       child: FutureBuilder(
         future: _imageService.getImageBytes(post.postPicture),

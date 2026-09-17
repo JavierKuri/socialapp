@@ -14,10 +14,14 @@ def handle_get_posts(handler):
         result = session.run(
             """
             MATCH (u:User)-[:POSTED]->(p:Post)
-            RETURN p
+            RETURN p, u.email AS email
             """
         )
 
-        posts = [dict(record["p"]) for record in result]
+        posts = []
+        for record in result:
+            post_dict = dict(record["p"])          
+            post_dict["email"] = record["email"]   
+            posts.append(post_dict)
 
     handler.respond(200, {"posts": posts})

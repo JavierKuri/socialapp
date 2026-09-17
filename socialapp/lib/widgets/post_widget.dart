@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/image_service.dart';
 import '../models/post.dart';
+import '../pages/detailed_post_page.dart';
 
 class PostWidget extends StatelessWidget {
   final Post post;
@@ -19,7 +20,12 @@ class PostWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: InkWell(
         onTap: () {
-          // TODO
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailedPostPage(post: post),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
