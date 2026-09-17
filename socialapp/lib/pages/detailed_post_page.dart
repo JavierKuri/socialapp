@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/post.dart';
 import '../services/image_service.dart';
+import 'comments_page.dart';
 
 class DetailedPostPage extends StatelessWidget {
   final Post post;
@@ -113,6 +114,26 @@ class DetailedPostPage extends StatelessWidget {
                       height: 1.5,
                       color: Colors.black87,
                     ),
+                  ),
+                  // Comment Button Section
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.comment_outlined, color: Colors.blue),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CommentsPage(post: post),
+                            ),
+                          );
+                        },
+                      ),
+                      const Text(
+                        "Comments",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
                 ],
               ),

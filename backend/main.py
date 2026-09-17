@@ -5,6 +5,8 @@ from endpoints.upload import handle_upload
 from endpoints.get_image import handle_get_image
 from endpoints.get_posts_by_user import handle_get_posts_by_user
 from endpoints.get_posts import handle_get_posts
+from endpoints.add_comment import handle_add_comment
+from endpoints.get_comments import handle_get_comments
 import json
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -44,6 +46,10 @@ class MyHandler(BaseHTTPRequestHandler):
             handle_get_posts_by_user(self)
         elif self.path == "/get_posts":
             handle_get_posts(self)
+        elif self.path == "/add_comment":
+            handle_add_comment(self)
+        elif self.path == "/get_comments":
+            handle_get_comments(self)
         else:
             self.send_json(404, {"error": "Not found"})
 
