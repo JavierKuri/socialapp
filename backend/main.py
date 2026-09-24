@@ -7,6 +7,7 @@ from endpoints.get_posts_by_user import handle_get_posts_by_user
 from endpoints.get_posts import handle_get_posts
 from endpoints.add_comment import handle_add_comment
 from endpoints.get_comments import handle_get_comments
+from endpoints.get_user import handle_get_user
 import json
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -50,6 +51,8 @@ class MyHandler(BaseHTTPRequestHandler):
             handle_add_comment(self)
         elif self.path == "/get_comments":
             handle_get_comments(self)
+        elif self.path == "/get_user":
+            handle_get_user(self)
         else:
             self.send_json(404, {"error": "Not found"})
 

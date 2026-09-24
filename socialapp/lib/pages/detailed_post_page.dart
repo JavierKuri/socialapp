@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/post.dart';
 import '../services/image_service.dart';
 import 'comments_page.dart';
+import 'other_user_page.dart';
 
 class DetailedPostPage extends StatelessWidget {
   final Post post;
@@ -75,10 +76,20 @@ class DetailedPostPage extends StatelessWidget {
                   // Author Email
                   Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 16,
                         backgroundColor: Colors.blueAccent,
-                        child: Icon(Icons.person, color: Colors.white, size: 20),
+                        child: IconButton(
+                          icon: Icon(Icons.person, color: Colors.white, size: 20),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OtherUserPage(title: post.email, email: post.email),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(width: 10),
                       Text(
